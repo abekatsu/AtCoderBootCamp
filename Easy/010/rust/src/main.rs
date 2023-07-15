@@ -8,5 +8,4 @@ fn main() {
     println!("{:?}", a.iter().enumerate().map( |(index, &val)| {
         return if index % 2 == 0 { val } else { - val };
     }).collect::<Vec<i32>>().iter().sum::<i32>());
-
 }
