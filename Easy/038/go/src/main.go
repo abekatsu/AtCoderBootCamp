@@ -28,27 +28,27 @@ func main() {
 	sc := bufio.NewScanner(os.Stdin)
 	sc.Buffer([]byte{}, math.MaxInt64)
 
-	cook_times := 0
-	min_reminder := 10
+	cookTimes := 0
+	minRemainder := 10
 
-	for _ = range 5 {
+	for range 5 {
 		sc.Scan()
-		dish_times, _ := strconv.Atoi(sc.Text())
-		reminder := dish_times % 10
-		if reminder != 0 {
-			if min_reminder > reminder {
-				min_reminder = reminder
+		dishTime, _ := strconv.Atoi(sc.Text())
+		remainder := dishTime % 10
+		if remainder != 0 {
+			if minRemainder > remainder {
+				minRemainder = remainder
 			}
-			cook_times += dish_times + (10 - reminder)
+			cookTimes += dishTime + (10 - remainder)
 		} else {
-			cook_times += dish_times
+			cookTimes += dishTime
 		}
 	}
 
-	if min_reminder != 10 {
-		cook_times = cook_times - 10 + (min_reminder % 10)
+	if minRemainder != 10 {
+		cookTimes = cookTimes - 10 + minRemainder
 	}
 
-	fmt.Println(cook_times)
+	fmt.Println(cookTimes)
 
 }
