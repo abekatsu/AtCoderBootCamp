@@ -10,24 +10,19 @@ fn main() {
         a: [u32; n],
     }
 
-    let mut max_value: u32 = 0;
-    let mut second_value: u32 = 0;
+    let mut left = vec![0u32; n+1];
+    let mut right = vec![0u32; n+1];
 
-    a.iter().for_each({|&v| {
-        if v > max_value {
-            second_value = max_value;
-            max_value = v;
-        } else if v > second_value {
-            second_value = v;
-        }
-    }});
+    // i番目に対して、左右の累積和を求める。
+    // left[i+1] には a[0] から a[i] までの最大値 (i.e. left[i]とa[i]の大きい方を代入する) を代入する
+    // right[i+1] には a[i] から a[n-1] までの最大値を代入する
+    for (idx, _v) in a.iter().enumerate() {
+        left[idx+1] = left[idx].max(a[idx]);
+        right[idx+1] = right[idx].max(a[n-idx-1]);
+    }
 
-    a.iter().for_each({|&v| {
-        if v < max_value {
-            println!("{}", max_value);
-        } else {
-            println!("{}", second_value);
-        }
+    (0..n).for_each({|idx| {
+        println!("{}", left[idx].max(right[n-idx-1]))
     }});
 
 }
