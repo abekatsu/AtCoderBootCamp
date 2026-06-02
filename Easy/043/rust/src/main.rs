@@ -10,12 +10,10 @@ fn main() {
         s: String,
     }
 
-    let mut chars = vec![0; 26];
-
-    for c in s.chars() {
-        chars[(c as u8 - b'a') as usize] += 1;
+    let mut mask = 0u32;
+    for c in s.bytes() {
+        mask ^= 1 << (c - b'a');
     }
 
-    let result = chars.iter().all(|v| v % 2 == 0);
-    println!("{}", if result { "Yes" } else { "No" });
+    println!("{}", if mask == 0 { "Yes" } else { "No" });
 }
