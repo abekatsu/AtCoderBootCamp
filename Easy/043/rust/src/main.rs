@@ -10,10 +10,7 @@ fn main() {
         s: String,
     }
 
-    let mut mask = 0u32;
-    for c in s.bytes() {
-        mask ^= 1 << (c - b'a');
-    }
+    let mask = s.bytes().fold(0u32, |mask, c| mask ^ (1 << (c - b'a')));
 
     println!("{}", if mask == 0 { "Yes" } else { "No" });
 }
