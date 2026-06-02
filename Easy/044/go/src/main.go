@@ -13,15 +13,14 @@ import (
 	"os"
 )
 
-func numOfReCcolorTiles(firstTile int, tiles string) uint {
-	result := uint(0)
+func numOfRecolorTiles(firstTile int, tiles string) int {
+	result := 0
 	currentTile := firstTile
-	for _, tile := range tiles {
-		if int(tile-'0') == currentTile {
-		} else {
-			result += 1
+	for _, b := range []byte(tiles) {
+		if int(b-'0') != currentTile {
+			result++
 		}
-		currentTile = (currentTile + 1) % 2
+		currentTile ^= 1
 	}
 
 	return result
@@ -29,17 +28,12 @@ func numOfReCcolorTiles(firstTile int, tiles string) uint {
 
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
-	sc.Buffer([]byte{}, math.MaxInt64)
+	sc.Buffer([]byte{}, math.MaxInt)
 	sc.Scan()
 
 	tiles := sc.Text()
-	result_0 := numOfReCcolorTiles(0, tiles)
-	result_1 := numOfReCcolorTiles(1, tiles)
+	result0 := numOfRecolorTiles(0, tiles)
+	result1 := len(tiles) - result0
 
-	if result_0 < result_1 {
-		fmt.Println(result_0)
-	} else {
-		fmt.Println(result_1)
-	}
-
+	fmt.Println(min(result0, result1))
 }
