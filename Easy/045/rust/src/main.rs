@@ -8,22 +8,28 @@
 // 92653 - 31415 = 61238
 use proconio::input;
 
+// X 以下の 5 桁回文数の個数を返す。
+// 5 桁回文数は先頭 3 桁 (prefix, 100..=999) で一意に決まるので、
+// 「palindrome(prefix) <= X を満たす prefix の個数」を数えればよい。
+fn count_le(x: i32) -> i32 {
+    if x < 10000 {
+        return 0;
+    }
+    let pre = x / 100; // 先頭 3 桁
+    let (d1, d2, d3) = (pre / 100, pre / 10 % 10, pre % 10);
+    let pal = d1 * 10000 + d2 * 1000 + d3 * 100 + d2 * 10 + d1;
+    if pal <= x {
+        pre - 99
+    } else {
+        pre - 100
+    }
+}
+
 fn main() {
     input! {
         a: i32,
         b: i32,
     }
 
-    // let mut result = (b - a) / 100;
-    // if ((b / 1000) - (b % 100)) <= 0 {
-    //     result += 1;
-    // }
-
-    let mut result = 0;
-    for num in a..=b {
-        if (num / 10000 == num % 10) && ((num / 1000) % 10 == (num % 100) / 10) {
-            result += 1;
-        }
-    }
-    println!("{}", result);
+    println!("{}", count_le(b) - count_le(a - 1));
 }
