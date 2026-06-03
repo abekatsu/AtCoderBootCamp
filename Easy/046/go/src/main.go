@@ -19,35 +19,30 @@ func main() {
 	sc.Buffer([]byte{}, math.MaxInt64)
 	sc.Scan()
 
-	inputs := strings.Split(sc.Text(), " ")
-	a, _ := strconv.Atoi(inputs[0])
-	b, _ := strconv.Atoi(inputs[1])
-	// c, _ := strconv.Atoi(inputs[2])
-	k, _ := strconv.Atoi(inputs[3])
-
-	compare_num := 1
-	for range 18 {
-		compare_num = compare_num * 10
-	}
+	fields := strings.Fields(sc.Text())
+	a, _ := strconv.Atoi(fields[0])
+	b, _ := strconv.Atoi(fields[1])
+	// c は a-b に影響しないため読み飛ばす
+	k, _ := strconv.Atoi(fields[3])
 
 	// (a, b, c) -> (b+c, c+a, a+b) -> (a+ a+b+c, b + a+b+c, c + a+b+c)
 	// -> (b+c+2(a+b+c), c+a+2(a+b+c), a+b+2(a+b+c))
 	// -> (a+3(a+b+c), b+3(a+b+c), c+3(a+b+c) -> ...
-	// -> (b+c+6(a+b+c), c+a+6(a+b+c), a+b(a+b+c) -> ...
-
-	result := 0
+	// これより、
+	// 1 操作で (a, b) -> (b+c, c+a) となり、a-b は
+	//   (b+c) - (c+a) = -(a-b)
+	// と符号が反転する。よって K 回後は K が偶数なら a-b、奇数なら b-a。
+	result := a - b
 	if k%2 == 1 {
-		// b + C(a+b+c) - {a + C(a+b+c)} = b-a (where C is some constant)
-		result = b - a
-	} else {
-		// c+a + C(a+b+c) - {b+c + C(a+b+c)} = a-b (where C is some constant)
-		result = a - b
+		result = -result
 	}
 
-	if (a-b) <= compare_num || (b-a) <= compare_num {
-		fmt.Println(result)
-	} else {
-		// however here is never reached since |a-b| <2*10^9  < 2^18.
+	// |result| = |A-B| ≤ 2*10^9 < 10^18 なので Unfair は実際には発生しないが、
+	// 問題文に忠実に残しておく。
+	const limit = 1_000_000_000_000_000_000
+	if result > limit || result < -limit {
 		fmt.Println("Unfair")
+	} else {
+		fmt.Println(result)
 	}
 }
