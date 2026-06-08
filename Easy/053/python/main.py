@@ -33,16 +33,13 @@
 
 n, m = map(int, input().split(" "))
 
-roads = [[0] * n for i in range(n)]
+degrees = [0] * n
 
 for i in range(m):
     a, b = map(int, input().split(" "))
-    roads[a - 1][b - 1] += 1
-    roads[b - 1][a - 1] += 1
+    degrees[a - 1] += 1
+    degrees[b - 1] += 1
 
 
-for i in range(n):
-    num = 0
-    for v in roads[i]:
-        num += v
-    print(num)
+for degree in degrees:
+    print(degree)
