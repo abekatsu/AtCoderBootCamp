@@ -44,7 +44,7 @@ func main() {
 
 	result := 0
 	for i := range n {
-		for j := i; j < n; j++ {
+		for j := i + 1; j < n; j++ {
 
 			distance := 0
 			for k := range d {
